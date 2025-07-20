@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Company Contact</title>
+</head>
+<body>
+  <h2>Contact Us</h2>
+  <form id="contactForm">
+    <input type="text" id="name" placeholder="Name" required><br>
+    <input type="email" id="email" placeholder="Email" required><br>
+    <textarea id="message" placeholder="Your message" required></textarea><br>
+    <button type="submit">Send</button>
+  </form>
+
+  <!-- Firebase SDK -->
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+    import { getFirestore, collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+    // Your Firebase config here:
+    const firebaseConfig = {
+        apiKey: "AIzaSyCAS0WckOuwSQ6aRJXde3hiXi9jciWPHds",
+        authDomain: "op-paracuda.firebaseapp.com",
+        projectId: "op-paracuda",
+        storageBucket: "op-paracuda.firebasestorage.app",
+        messagingSenderId: "978518189020",
+        appId: "1:978518189020:web:4708a7fafec40079c72519"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+
+    document.getElementById("contactForm").addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const name = document.getElementById("name").value;
+      const email = document.getElementById("email").value;
+      const message = document.getElementById("message").value;
+
+      try {
+        await addDoc(collection(db, "enquiries"), {
+          name,
+          email,
+          message,
+          createdAt: serverTimestamp()
+        });
+        alert("Message sent!");
+        document.getElementById("contactForm").reset();
+      } catch (error) {
+        console.error("Error adding document: ", error);
+        alert("Something went wrong.");
+      }
+    });
+  </script>
+</body>
+</html>
