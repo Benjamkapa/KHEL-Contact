@@ -1,55 +1,169 @@
+<!-- <form id="contact-form">
+  <input type="text" name="name" placeholder="Your Name" required /><br>
+  <input type="email" name="email" placeholder="Your Email" required /><br>
+  <input type="text" name="title" placeholder="Your Email title"/><br>
+  <textarea name="message" placeholder="Your Message" required></textarea><br>
+  <input type="hidden" name="time" value="" />
+  <button type="submit">Send</button>
+</form>
+
+<script type="module">
+  import emailjs from 'https://cdn.skypack.dev/@emailjs/browser';
+
+  // Set the current timestamp manually (since HTML can't evaluate JS inside value)
+  document.querySelector('input[name="time"]').value = new Date().toISOString();
+
+  emailjs.init("cdOVwZZzAEa5Lfeq9"); // ✅ Your public key
+
+  document.getElementById('contact-form').addEventListener('submit', function(e) {
+    e.preventDefault();
+
+    emailjs.sendForm('service_clo9cr9', 'template_4znfxd8', this)
+      .then(() => {
+        alert('✅ Message sent successfully!');
+        this.reset();
+      })
+      .catch((error) => {
+        console.error('❌ EmailJS error:', error);
+        alert('Something went wrong. Try again later.');
+      });
+  });
+</script> -->
+
+
+
+
+
+
+
+
+
+
+
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>Company Contact</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Contact Us</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: #f9f9f9;
+      padding: 2rem;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+    }
+
+    .contact-container {
+      background: #ffffff;
+      padding: 2rem;
+      border-radius: 8px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+      width: 100%;
+      max-width: 500px;
+    }
+
+    h2 {
+      text-align: center;
+      margin-bottom: 1.5rem;
+      color: #333;
+    }
+
+    input, textarea, button {
+      width: 100%;
+      padding: 0.75rem;
+      margin-bottom: 1rem;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      font-size: 1rem;
+    }
+
+    button {
+      background: #4CAF50;
+      color: white;
+      font-weight: bold;
+      border: none;
+      cursor: pointer;
+      transition: background 0.3s ease;
+    }
+
+    button:hover {
+      background: #45a049;
+    }
+
+    .status {
+      text-align: center;
+      font-size: 0.95rem;
+      margin-top: 1rem;
+    }
+
+    .success {
+      color: green;
+    }
+
+    .error {
+      color: red;
+    }
+  </style>
 </head>
 <body>
-  <h2>Contact Us</h2>
-  <form id="contactForm">
-    <input type="text" id="name" placeholder="Name" required><br>
-    <input type="email" id="email" placeholder="Email" required><br>
-    <textarea id="message" placeholder="Your message" required></textarea><br>
-    <button type="submit">Send</button>
-  </form>
+  <div class="contact-container">
+    <h2>Contact Us</h2>
+    <form id="contact-form">
+      <input type="text" name="name" placeholder="Your Name" required />
+      <input type="email" name="email" placeholder="Your Email" required />
+      <input type="text" name="title" placeholder="Email Subject (Optional)" />
+      <textarea name="message" placeholder="Your Message" rows="5" required></textarea>
+      <input type="hidden" name="time" />
+      <button type="submit">Send Message</button>
+    </form>
+    <div id="form-status" class="status"></div>
+  </div>
 
-  <!-- Firebase SDK -->
+  <!-- EmailJS SDK v4 (modern module version) -->
   <script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-    import { getFirestore, collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+    import emailjs from 'https://cdn.skypack.dev/@emailjs/browser';
 
-    // Your Firebase config here:
-    const firebaseConfig = {
-        apiKey: "AIzaSyCAS0WckOuwSQ6aRJXde3hiXi9jciWPHds",
-        authDomain: "op-paracuda.firebaseapp.com",
-        projectId: "op-paracuda",
-        storageBucket: "op-paracuda.firebasestorage.app",
-        messagingSenderId: "978518189020",
-        appId: "1:978518189020:web:4708a7fafec40079c72519"
-    };
+    const form = document.getElementById('contact-form');
+    const status = document.getElementById('form-status');
+    const hiddenTimeField = form.querySelector('input[name="time"]');
 
-    const app = initializeApp(firebaseConfig);
-    const db = getFirestore(app);
+    // Initialize EmailJS
+    emailjs.init('cdOVwZZzAEa5Lfeq9'); // Replace with your public key
 
-    document.getElementById("contactForm").addEventListener("submit", async (e) => {
+    form.addEventListener('submit', (e) => {
       e.preventDefault();
-      const name = document.getElementById("name").value;
-      const email = document.getElementById("email").value;
-      const message = document.getElementById("message").value;
 
-      try {
-        await addDoc(collection(db, "enquiries"), {
-          name,
-          email,
-          message,
-          createdAt: serverTimestamp()
+      // Generate a readable timestamp
+      const now = new Date();
+      const readableTimestamp = now.toLocaleString('en-KE', {
+        timeZone: 'Africa/Nairobi',
+        weekday: 'short',
+        year: 'numeric',
+        month: 'short',
+        day: 'numeric',
+        hour: '2-digit',
+        minute: '2-digit',
+        hour12: true
+      });
+
+      hiddenTimeField.value = readableTimestamp;
+
+      emailjs.sendForm('service_clo9cr9', 'template_4znfxd8', form)
+        .then(() => {
+          status.textContent = '✅ Message sent successfully!';
+          status.className = 'status success';
+          form.reset();
+        })
+        .catch((error) => {
+          console.error('EmailJS error:', error);
+          status.textContent = '❌ Failed to send message. Try again later.';
+          status.className = 'status error';
         });
-        alert("Message sent!");
-        document.getElementById("contactForm").reset();
-      } catch (error) {
-        console.error("Error adding document: ", error);
-        alert("Something went wrong.");
-      }
     });
   </script>
 </body>
