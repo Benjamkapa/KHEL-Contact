@@ -1,46 +1,3 @@
-<!-- <form id="contact-form">
-  <input type="text" name="name" placeholder="Your Name" required /><br>
-  <input type="email" name="email" placeholder="Your Email" required /><br>
-  <input type="text" name="title" placeholder="Your Email title"/><br>
-  <textarea name="message" placeholder="Your Message" required></textarea><br>
-  <input type="hidden" name="time" value="" />
-  <button type="submit">Send</button>
-</form>
-
-<script type="module">
-  import emailjs from 'https://cdn.skypack.dev/@emailjs/browser';
-
-  // Set the current timestamp manually (since HTML can't evaluate JS inside value)
-  document.querySelector('input[name="time"]').value = new Date().toISOString();
-
-  emailjs.init("cdOVwZZzAEa5Lfeq9"); // ✅ Your public key
-
-  document.getElementById('contact-form').addEventListener('submit', function(e) {
-    e.preventDefault();
-
-    emailjs.sendForm('service_clo9cr9', 'template_4znfxd8', this)
-      .then(() => {
-        alert('✅ Message sent successfully!');
-        this.reset();
-      })
-      .catch((error) => {
-        console.error('❌ EmailJS error:', error);
-        alert('Something went wrong. Try again later.');
-      });
-  });
-</script> -->
-
-
-
-
-
-
-
-
-
-
-
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -118,8 +75,9 @@
   <div class="contact-container">
     <h2>Contact Us</h2>
     <form id="contact-form">
-      <input type="text" name="name" placeholder="Your Name" required />
-      <input type="email" name="email" placeholder="Your Email" required />
+      <input type="text" name="visitor_name" placeholder="Your Name" required />
+      <input type="email" name="visitor_email" placeholder="Your Email" required />
+      <input type="number" name="visitor_phone" placeholder="Your Phone No." required />
       <input type="text" name="title" placeholder="Email Subject (Optional)" />
       <textarea name="message" placeholder="Your Message" rows="5" required></textarea>
       <input type="hidden" name="time" />
