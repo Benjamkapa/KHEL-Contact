@@ -1,159 +1,172 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Contact Us</title>
-    <style>
-      body {
-        font-family: "Segoe UI", sans-serif;
-        background: #f9f9f9;
-        padding: 2rem;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        min-height: 100vh;
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Shopiwa - Place Your Order</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    * {
+      box-sizing: border-box;
+      font-family: comic sans ms;
+    }
+
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: 'Inter', sans-serif;
+      background: linear-gradient(120deg, #f0f2f5, #ffffff);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+    }
+
+    .form-container {
+      background: #fff;
+      padding: 2.5rem;
+      border-radius: 12px;
+      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+      max-width: 480px;
+      width: 100%;
+    }
+
+    h2 {
+      text-align: center;
+      margin-bottom: 1.5rem;
+      font-weight: 600;
+      color: #1e1e1e;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 0.5rem;
+      font-weight: 500;
+      color: #333;
+    }
+
+    input, textarea, select {
+      width: 100%;
+      padding: 0.75rem;
+      margin-bottom: 1.2rem;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      font-size: 1rem;
+      transition: border 0.3s ease;
+    }
+
+    input:focus, textarea:focus, select:focus {
+      border-color: #007bff;
+      outline: none;
+    }
+
+    button {
+      width: 100%;
+      padding: 0.9rem;
+      background-color: #007bff;
+      color: white;
+      font-weight: 600;
+      font-size: 1rem;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+
+    button:hover {
+      background-color: #0056b3;
+    }
+
+    .status {
+      text-align: center;
+      font-size: 0.95rem;
+      margin-top: 1rem;
+    }
+
+    .success {
+      color: green;
+    }
+
+    .error {
+      color: red;
+    }
+
+    @media (max-width: 500px) {
+      .form-container {
+        padding: 1.5rem;
       }
+    }
+  </style>
+</head>
+<body>
+  <div class="form-container">
+    <h2 style="color:red; font-size: 4em;"><strong style="color:green">Shop</strong>iwa</h2>
+    <form id="contact-form">
+      <label for="client_name">Full Name</label>
+      <input type="text" name="client_name" id="client_name" placeholder="e.g. Jane Mwangi" required />
 
-      .contact-container {
-        background: #ffffff;
-        padding: 2rem;
-        border-radius: 8px;
-        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
-        width: 100%;
-        max-width: 500px;
-      }
-      .contact-container:hover {
-        box-shadow: 0 6px 30px rgba(0, 0, 0, 0.15);
-        /* background-color: #f0f0f0; */
-      }
+      <label for="client_phone">Phone Number</label>
+      <input type="tel" name="client_phone" id="client_phone" placeholder="e.g. 0712345678" required />
 
-      h2 {
-        text-align: center;
-        margin-bottom: 1.5rem;
-        color: #333;
-      }
+      <label for="client_location">Delivery Location</label>
+      <input type="text" name="client_location" id="client_location" placeholder="e.g. Umoja, Roysambu, CBD" required />
 
-      input,
-      textarea,
-      button {
-        width: 100%;
-        padding: 0.75rem;
-        margin-bottom: 1rem;
-        border: 1px solid #ddd;
-        border-radius: 4px;
-        font-size: 1rem;
-      }
+      <label for="items_needed">Shopping List</label>
+      <textarea name="items_needed" id="items_needed" rows="4" placeholder="e.g. 2kg rice, bar soap, tomatoes..." required></textarea>
 
-      button {
-        background: #4caf50;
-        color: white;
-        font-weight: bold;
-        border: none;
-        cursor: pointer;
-        transition: background 0.3s ease;
-      }
+      <label for="payment_method">Payment Method</label>
+      <select name="payment_method" id="payment_method">
+        <option value="M-PESA">M-PESA</option>
+        <option value="Cash on Delivery">Cash on Delivery</option>
+        <option value="Card Payment">Card Payment</option>
+      </select>
 
-      button:hover {
-        background: #45a049;
-      }
+      <input type="hidden" name="time" />
 
-      .status {
-        text-align: center;
-        font-size: 0.95rem;
-        margin-top: 1rem;
-      }
+      <button type="submit" onClick="popup">Place Order</button>
+    </form>
+    <div id="form-status" class="status"></div>
+  </div>
 
-      .success {
-        color: green;
-      }
+  <!-- EmailJS SDK -->
+  <script type="module">
+    import emailjs from 'https://cdn.skypack.dev/@emailjs/browser';
 
-      .error {
-        color: red;
-      }
-    </style>
-  </head>
-  <body>
-    <div class="contact-container">
-      <h2>Contact Us</h2>
-      <form id="contact-form">
-        <input
-          type="text"
-          name="visitor_name"
-          placeholder="Your Name"
-          required
-        />
-        <input
-          type="email"
-          name="visitor_email"
-          placeholder="Your Email"
-          required
-        />
-        <input
-          type="number"
-          name="visitor_phone"
-          placeholder="Your Phone No."
-          required
-        />
-        <input
-          type="text"
-          name="title"
-          placeholder="Email Subject (Optional)"
-        />
-        <textarea
-          name="visitor_message"
-          placeholder="Your Message"
-          rows="5"
-          required
-        ></textarea>
-        <input type="hidden" name="time" />
-        <button type="submit">Send Message</button>
-      </form>
-      <div id="form-status" class="status"></div>
-    </div>
+    const form = document.getElementById('contact-form');
+    const status = document.getElementById('form-status');
+    const hiddenTimeField = form.querySelector('input[name="time"]');
 
-    <!-- EmailJS SDK v4 (modern module version) -->
-    <script type="module">
-      import emailjs from "https://cdn.skypack.dev/@emailjs/browser";
+    emailjs.init('cdOVwZZzAEa5Lfeq9'); // Replace with your actual public key
 
-      const form = document.getElementById("contact-form");
-      const status = document.getElementById("form-status");
-      const hiddenTimeField = form.querySelector('input[name="time"]');
+    form.addEventListener('submit', (e) => {
+      e.preventDefault();
 
-      // Initialize EmailJS
-      emailjs.init("cdOVwZZzAEa5Lfeq9"); // Replace with your public key
-
-      form.addEventListener("submit", (e) => {
-        e.preventDefault();
-
-        // Generate a readable timestamp
-        const now = new Date();
-        const readableTimestamp = now.toLocaleString("en-KE", {
-          timeZone: "Africa/Nairobi",
-          weekday: "short",
-          year: "numeric",
-          month: "short",
-          day: "numeric",
-          hour: "2-digit",
-          minute: "2-digit",
-          hour12: true,
-        });
-
-        hiddenTimeField.value = readableTimestamp;
-
-        emailjs
-          .sendForm("service_clo9cr9", "template_4znfxd8", form)
-          .then(() => {
-            status.textContent = "✅ Message sent successfully!";
-            status.className = "status success";
-            form.reset();
-          })
-          .catch((error) => {
-            console.error("EmailJS error:", error);
-            status.textContent = "❌ Failed to send message. Try again later.";
-            status.className = "status error";
-          });
+      const now = new Date();
+      const readableTimestamp = now.toLocaleString('en-KE', {
+        timeZone: 'Africa/Nairobi',
+        weekday: 'short',
+        year: 'numeric',
+        month: 'short',
+        day: 'numeric',
+        hour: '2-digit',
+        minute: '2-digit',
+        hour12: true
       });
-    </script>
-  </body>
+
+      hiddenTimeField.value = readableTimestamp;
+
+      emailjs.sendForm('service_clo9cr9', 'template_4znfxd8', form)
+        .then(() => {
+          status.textContent = '✅ Your order has been sent successfully!';
+          status.className = 'status success';
+          form.reset();
+        })
+        .catch((error) => {
+          console.error('EmailJS error:', error);
+          status.textContent = '❌ Failed to send. Please try again.';
+          status.className = 'status error';
+        });
+    });
+  </script>
+</body>
 </html>
